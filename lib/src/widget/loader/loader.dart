@@ -3,7 +3,7 @@ import 'package:marvel/src/config/colors.dart';
 import 'package:marvel/src/config/images.dart';
 
 
-loader({
+load({
   @required BuildContext? context,
 }) {
   return Center(
@@ -16,18 +16,18 @@ loader({
             alignment: Alignment.center,
             children: [
               Container(
-                  width: 80,
-                  height: 80,
+                  width: 100,
+                  height: 100,
                   child: const CircularProgressIndicator(
-                    strokeWidth: 2,
+                    strokeWidth: 3,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.appGreenColor),
+                        AppColors.whiteColor),
                   )),
               Container(
                   alignment: Alignment.center,
                   width: 70,
                   height: 70,
-                  child: Image.asset(ImagePath.roundLogo)),
+                  child: Image.asset(ImagePath.pngLogo)),
             ],
           ),
         ],

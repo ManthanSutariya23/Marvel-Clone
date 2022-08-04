@@ -7,6 +7,6 @@ class ImagePath {
   // logo
   static const String squareLogo = 'assets/logo/square.png';
   static const String roundLogo = 'assets/logo/round.png';
-  static const String pngLogo = 'assets/logo/carpng.png';
+  static const String pngLogo = 'assets/images/logo.png';
   static const String pngLogoWithName = 'assets/logo/logo.png';
 }

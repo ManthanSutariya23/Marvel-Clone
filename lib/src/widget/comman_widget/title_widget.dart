@@ -7,8 +7,6 @@ Widget titleHeading ({
   @required String? title,
   bool isViewall = false,
   Function()? viewallOntap,
-  double? leftPadding,
-  double? rightPadding,
 }) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,

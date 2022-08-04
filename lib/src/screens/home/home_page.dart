@@ -6,6 +6,7 @@ import 'package:marvel/src/config/colors.dart';
 import 'package:marvel/src/constant/constants.dart';
 import 'package:marvel/src/controller/character/character_conroller.dart';
 import 'package:marvel/src/screens/home/character_slider.dart';
+import 'package:marvel/src/widget/loader/loader.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -45,12 +46,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: 
       loader
-      ? Container(
-        color: Colors.grey.shade900,
-        child: Center(
-          child: CircularProgressIndicator(color: AppColors.whiteColor,),
-        ),
-      )
+      ? load(context: context)
       : Column(
         children: <Widget>[
           Container(

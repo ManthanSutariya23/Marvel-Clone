@@ -1,10 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:marvel/src/config/colors.dart';
 import 'package:marvel/src/model/model.dart';
 import 'package:marvel/src/model/model_variable.dart';
+import 'package:marvel/src/screens/character_page/comics.dart';
+import 'package:marvel/src/screens/character_page/more_detail.dart';
+import 'package:marvel/src/screens/character_page/series.dart';
 import 'package:marvel/src/widget/comman_widget/image_view.dart';
 import 'package:marvel/src/widget/comman_widget/sizeboxs.dart';
 import 'package:marvel/src/widget/comman_widget/title_widget.dart';
-import '../../constant/constants.dart';
+import 'package:marvel/src/widget/loader/loader.dart';
 
 class CharacterPage extends StatefulWidget {
   final index;
@@ -18,23 +25,41 @@ class CharacterPage extends StatefulWidget {
 class _CharacterPageState extends State<CharacterPage> {
 
   static var comics,series,stories,events;
+  bool loader = true;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    
-  }
+    data();
+  } 
 
   data() async {
     comics = await getDataWithend(arg: ModelVariable.character['data']['results'][widget.index]['comics']['collectionURI']);
+    series = await getDataWithend(arg: ModelVariable.character['data']['results'][widget.index]['series']['collectionURI']);
+    stories = await getDataWithend(arg: ModelVariable.character['data']['results'][widget.index]['stories']['collectionURI']);
+    events = await getDataWithend(arg: ModelVariable.character['data']['results'][widget.index]['events']['collectionURI']);
+    setState(() {
+      loader = true;
+    });
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      if(comics != null && series != null && stories != null && events != null)
+      {
+        setState(() {
+          loader = false;
+        });
+        timer.cancel();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff0D0C11),
-      body: SingleChildScrollView(
+      body: loader
+      ? load(context: context)
+      : SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -92,13 +117,67 @@ class _CharacterPageState extends State<CharacterPage> {
                     textAlign: TextAlign.justify,
                   ),
 
-                  sizedBoxHeight(context: context, height: 20),
+                  // sizedBoxHeight(context: context, height: 50),
 
                   titleHeading(title: 'Comics'),
 
-                  Comics(0),
-                  Comics(1),
-                  Comics(2),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Container(
+                    height: (Get.size.height * 0.15 + 14) * comics['data']['count'],
+                    child: Comics(comics)
+                  ),
+
+                  titleHeading(title: 'Series'),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Container(
+                    height: (Get.size.height * 0.15 + 17) * series['data']['count'],
+                    child: Series(series)
+                  ),
+
+                  sizedBoxHeight(context: context, height: 20),
+
+                  titleHeading(title: 'Stories'),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Container(
+                    height: (Get.size.height * 0.15) * stories['data']['count'] + 50,
+                    child: Series(stories)
+                  ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+                  
+                  titleHeading(title: 'Events'),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Container(
+                    height: (Get.size.height * 0.15) * events['data']['count'] + 10,
+                    child: Series(events)
+                  ),
+
+                  titleHeading(title: 'More Details'),
+
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Container(
+                    child: MoreDetail(detail: ModelVariable.character['data']['results'][widget.index]['urls'],),
+                  ),
                 ],
               ),
             )
@@ -109,52 +188,3 @@ class _CharacterPageState extends State<CharacterPage> {
   }
 }
 
-class Comics extends StatelessWidget {
-  final index;
-
-  Comics(this.index);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: MediaQuery.of(context).size.width / 2 - 25,
-            child: Image.asset(latestNews[index]['imgUrl']!),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width / 2 - 25,
-            child: Column(
-              children: <Widget>[
-                Text(
-                  latestNews[index]['tag']!,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  latestNews[index]['title']!,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
-                  textAlign: TextAlign.justify,
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
