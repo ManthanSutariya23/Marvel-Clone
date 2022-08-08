@@ -18,6 +18,7 @@ Widget imageView({
   double? bottomMargin,
   double? leftMargin,
   BoxShape? shape,
+  BoxFit? boxFit,
 }) {
   return Container(
     height: height ?? Get.size.width / 6,
@@ -36,7 +37,7 @@ Widget imageView({
                 child: CachedNetworkImage(
                   height: Get.size.width / 6,
                   width: Get.size.width / 6,
-                  fit: BoxFit.cover,
+                  fit: boxFit ?? BoxFit.cover,
                   errorWidget: (context, url, error) => Center(
                     child: Text(
                       title == null || title == "" ? " " : title.split(" ")[0],
@@ -48,7 +49,7 @@ Widget imageView({
                   filterQuality: FilterQuality.high,
                   imageBuilder: (context, imageProvider) => Container(
                     decoration: BoxDecoration(
-                      image: DecorationImage(image: imageProvider, fit: BoxFit.fill),
+                      image: DecorationImage(image: imageProvider, fit: boxFit ?? BoxFit.cover),
                     ),
                   ),
                   placeholder: (context, url) => Center(
@@ -66,7 +67,7 @@ Widget imageView({
                       imageURL!,
                       height: Get.size.width / 6,
                       width: Get.size.width / 6,
-                      fit: BoxFit.cover,
+                      fit: boxFit ?? BoxFit.cover,
                     ))
                 : ClipRRect(
                     borderRadius: BorderRadius.circular(shape != null && shape == BoxShape.rectangle ? 10 : 500),
@@ -74,7 +75,7 @@ Widget imageView({
                       File(imageURL!),
                       height: Get.size.width / 6,
                       width: Get.size.width / 6,
-                      fit: BoxFit.cover,
+                      fit: boxFit ?? BoxFit.cover,
                     ))
         : Center(
             child: Text(

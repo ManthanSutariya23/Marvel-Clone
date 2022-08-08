@@ -117,8 +117,6 @@ class _CharacterPageState extends State<CharacterPage> {
                     textAlign: TextAlign.justify,
                   ),
 
-                  // sizedBoxHeight(context: context, height: 50),
-
                   titleHeading(title: 'Comics'),
 
                   SizedBox(
@@ -126,7 +124,7 @@ class _CharacterPageState extends State<CharacterPage> {
                   ),
 
                   Container(
-                    height: (Get.size.height * 0.15 + 14) * comics['data']['count'],
+                    height: Get.size.height * 0.4,
                     child: Comics(comics)
                   ),
 
@@ -137,11 +135,13 @@ class _CharacterPageState extends State<CharacterPage> {
                   ),
 
                   Container(
-                    height: (Get.size.height * 0.15 + 17) * series['data']['count'],
+                    height: Get.size.height * 0.4,
                     child: Series(series)
                   ),
 
-                  sizedBoxHeight(context: context, height: 20),
+                  SizedBox(
+                    height: 20,
+                  ),
 
                   titleHeading(title: 'Stories'),
 
@@ -150,7 +150,7 @@ class _CharacterPageState extends State<CharacterPage> {
                   ),
 
                   Container(
-                    height: (Get.size.height * 0.15) * stories['data']['count'] + 50,
+                    height: Get.size.height * 0.3,
                     child: Series(stories)
                   ),
 
@@ -165,7 +165,7 @@ class _CharacterPageState extends State<CharacterPage> {
                   ),
 
                   Container(
-                    height: (Get.size.height * 0.15) * events['data']['count'] + 10,
+                    height: Get.size.height * 0.3,
                     child: Series(events)
                   ),
 
