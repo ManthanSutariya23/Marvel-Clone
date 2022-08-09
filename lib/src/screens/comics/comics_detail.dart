@@ -360,7 +360,7 @@ class _Comics_DetailState extends State<Comics_Detail> {
                         
                         Container(
                           height: 
-                          widget.comics['data']['results'][widget.index]['urls'].length == 4 || widget.comics['data']['results'][widget.index]['urls'].length == 2
+                          widget.comics['data']['results'][widget.index]['urls'].length == 4 || widget.comics['data']['results'][widget.index]['urls'].length == 3
                           ? Get.size.height * 0.18
                           : Get.size.height * 0.1,
                           child: GridView.builder(
