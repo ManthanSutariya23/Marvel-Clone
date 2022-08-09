@@ -15,16 +15,16 @@ import 'package:marvel/src/widget/comman_widget/title_widget.dart';
 import 'package:marvel/src/widget/loader/loader.dart';
 import 'package:marvel/src/widget/url_launcher/url_launcher.dart';
 
-class Comics_Detail extends StatefulWidget {
+class Series_Detail extends StatefulWidget {
   var comics;
   int index;
-  Comics_Detail({Key? key,this.comics,required this.index}) : super(key: key);
+  Series_Detail({Key? key,this.comics,required this.index}) : super(key: key);
 
   @override
-  State<Comics_Detail> createState() => _Comics_DetailState();
+  State<Series_Detail> createState() => _Series_DetailState();
 }
 
-class _Comics_DetailState extends State<Comics_Detail> {
+class _Series_DetailState extends State<Series_Detail> {
   bool loader = true;
   static var creater,series,stories,events,character;
 
@@ -141,100 +141,33 @@ class _Comics_DetailState extends State<Comics_Detail> {
                     ),
                   ),
 
+                  // Date
                   Container(
                     child: 
-                    widget.comics['data']['results'][widget.index]['dates'].length == 0
+                    widget.comics['data']['results'][widget.index]['startYear'] == "" ||  widget.comics['data']['results'][widget.index]['endYear'] == ""
                     ? SizedBox()
                     : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for(var i=0; i<widget.comics['data']['results'][widget.index]['dates'].length; i++)
-                        Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                child: text(
-                                  title1: widget.comics['data']['results'][widget.index]['dates'][i]['type'].toString().split("Date")[0].toUpperCase() + " DATE",
-                                  title2: DateFormat.yMMMMd().format(DateTime.parse(widget.comics['data']['results'][widget.index]['dates'][i]['date'])).toString()),
-                              ),
 
-                              SizedBox(height: 30)
-                            ],
+                          widget.comics['data']['results'][widget.index]['startYear'] == ""
+                          ? SizedBox()
+                          : text(
+                            title1: "Start Year",
+                            title2: widget.comics['data']['results'][widget.index]['startYear'].toString()
                           ),
-                        ),
+                          
+                          SizedBox(height: 30,),
 
-                        SizedBox(height: 30,),
-                      ],
-                    ),
-                  ),
-
-                  // price
-                  Container(
-                    child: 
-                    widget.comics['data']['results'][widget.index]['prices'].length == 0
-                    ? SizedBox()
-                    : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        titleHeading(title: 'Prices'),
-
-                        SizedBox(height: 20),
-
-                        for(var i=0; i<widget.comics['data']['results'][widget.index]['prices'].length; i++)
-                        Container(
-                          child: Column(
-                            children: [
-                              Container(
-                                child: text(
-                                  title1: widget.comics['data']['results'][widget.index]['prices'][i]['type'].toString().split("Price")[0].toUpperCase() + " PRICE",
-                                  title2: "\$ "+widget.comics['data']['results'][widget.index]['prices'][i]['price'].toString(),
-                                )
-                              ),
-
-                              SizedBox(height: 30)
-                            ],
+                          widget.comics['data']['results'][widget.index]['endYear'] == ""
+                          ? SizedBox()
+                          : text(
+                            title1: "End Year",
+                            title2: widget.comics['data']['results'][widget.index]['endYear'].toString()
                           ),
-                        ),
 
-                        SizedBox(height: 30,),
-                      ],
-                    ),
-                  ),
+                          SizedBox(height: 30,),
 
-                  // images
-                  Container(
-                    child: 
-                    widget.comics['data']['results'][widget.index]['images'].length == 0
-                    ? SizedBox()
-                    : Column(
-                      children: [
-                        titleHeading(title: 'Images'),
-
-                        SizedBox(height: 20),
-
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          physics: BouncingScrollPhysics(),
-                          child: Row(
-                            children: [
-
-                              SizedBox(width: 15),
-                              
-                              for (var i = 0; i < widget.comics['data']['results'][widget.index]['images'].length; i++)
-                              imageView(
-                                rightMargin: 10,
-                                height: Get.size.height * 0.6,
-                                shape: BoxShape.rectangle,
-                                width: Get.size.width * 0.9,
-                                imageURL: widget.comics['data']['results'][widget.index]['images'][i]['path'] + "." + widget.comics['data']['results'][widget.index]['images'][i]['extension'], 
-                                title: 'Image', 
-                                isLocalImage: false
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 30,),
                       ],
                     ),
                   ),

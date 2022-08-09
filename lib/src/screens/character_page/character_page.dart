@@ -136,7 +136,7 @@ class _CharacterPageState extends State<CharacterPage> {
 
                   Container(
                     height: Get.size.height * 0.4,
-                    child: Series(series)
+                    child: Series(series,"series")
                   ),
 
                   SizedBox(
@@ -151,7 +151,7 @@ class _CharacterPageState extends State<CharacterPage> {
 
                   Container(
                     height: Get.size.height * 0.3,
-                    child: Series(stories)
+                    child: Series(stories,"story")
                   ),
 
                   SizedBox(
@@ -166,7 +166,7 @@ class _CharacterPageState extends State<CharacterPage> {
 
                   Container(
                     height: Get.size.height * 0.3,
-                    child: Series(events)
+                    child: Series(events,'events')
                   ),
 
                   titleHeading(title: 'More Details'),
