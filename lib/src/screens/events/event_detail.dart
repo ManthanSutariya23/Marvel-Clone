@@ -15,18 +15,18 @@ import 'package:marvel/src/widget/comman_widget/title_widget.dart';
 import 'package:marvel/src/widget/loader/loader.dart';
 import 'package:marvel/src/widget/url_launcher/url_launcher.dart';
 
-class Story_Detail extends StatefulWidget {
-  var comics;
+class Event_Detail extends StatefulWidget {
+  var data;
   int index;
-  Story_Detail({Key? key,this.comics,required this.index}) : super(key: key);
+  Event_Detail({Key? key,this.data,required this.index}) : super(key: key);
 
   @override
-  State<Story_Detail> createState() => _Story_DetailState();
+  State<Event_Detail> createState() => _Event_DetailState();
 }
 
-class _Story_DetailState extends State<Story_Detail> {
+class _Event_DetailState extends State<Event_Detail> {
   bool loader = true;
-  static var creater,series,comics,events,character;
+  static var creater,series,stories,character,comics;
 
 
   @override
@@ -37,16 +37,17 @@ class _Story_DetailState extends State<Story_Detail> {
   }
 
   data() async {
-    creater = await getDataWithend(arg: widget.comics['data']['results'][widget.index]['creators']['collectionURI']);
-    character = await getDataWithend(arg: widget.comics['data']['results'][widget.index]['characters']['collectionURI']);
-    comics = await getDataWithend(arg: widget.comics['data']['results'][widget.index]['comics']['collectionURI']);
-    events = await getDataWithend(arg: widget.comics['data']['results'][widget.index]['events']['collectionURI']);
-    series = await getDataWithend(arg: widget.comics['data']['results'][widget.index]['series']['collectionURI']);
+    creater = await getDataWithend(arg: widget.data['data']['results'][widget.index]['creators']['collectionURI']);
+    character = await getDataWithend(arg: widget.data['data']['results'][widget.index]['characters']['collectionURI']);
+    stories = await getDataWithend(arg: widget.data['data']['results'][widget.index]['stories']['collectionURI']);
+    series = await getDataWithend(arg: widget.data['data']['results'][widget.index]['series']['collectionURI']);
+    comics = await getDataWithend(arg: widget.data['data']['results'][widget.index]['comics']['collectionURI']);
+
     setState(() {
       loader = true;
     });
     Timer.periodic(Duration(seconds: 1), (timer) {
-      if(creater != null && character != null && comics != null && events != null && series != null)
+      if(creater != null && character != null && stories != null)
       {
         setState(() {
           loader = false;
@@ -75,11 +76,8 @@ class _Story_DetailState extends State<Story_Detail> {
                     tag: "",
                     child: imageView(
                       shape: BoxShape.rectangle,
-                      imageURL: 
-                      widget.comics['data']['results'][widget.index]['thumbnail'] == null
-                      ? "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg"
-                      : widget.comics['data']['results'][widget.index]['thumbnail']['path']+"."+widget.comics['data']['results'][widget.index]['thumbnail']['extension'],
-                      title: widget.comics['data']['results'][widget.index]['name'],
+                      imageURL: widget.data['data']['results'][widget.index]['thumbnail']['path']+"."+widget.data['data']['results'][widget.index]['thumbnail']['extension'],
+                      title: widget.data['data']['results'][widget.index]['name'],
                       isLocalImage: false
                     ),
                   ),
@@ -105,29 +103,72 @@ class _Story_DetailState extends State<Story_Detail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.comics['data']['results'][widget.index]['title'].toUpperCase(),
+                    widget.data['data']['results'][widget.index]['title'].toUpperCase(),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    widget.data['data']['results'][widget.index]['description'] ?? "",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.justify,
+                  ),
 
                   SizedBox(height: 30),
 
-                  // Date
+                  titleHeading(title: 'Dates'),
+
+                  SizedBox(height: 20,),
+
                   Container(
                     child: 
-                    widget.comics['data']['results'][widget.index]['modified'] == ""
+                    widget.data['data']['results'][widget.index]['modified'] == ""
                     ? SizedBox()
                     : Column(
                       children: [
                         text(
                           title1: "Modified Date",
-                          title2: DateFormat.yMMMMEEEEd().format(DateTime.parse(widget.comics['data']['results'][widget.index]['modified'])).toString()
+                          title2: DateFormat.yMMMMd().format(DateTime.parse(widget.data['data']['results'][widget.index]['modified'])).toString()
                         ),
 
                         SizedBox(height: 30),
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    child: 
+                    widget.data['data']['results'][widget.index]['start'] == "" || widget.data['data']['results'][widget.index]['end'] == ""
+                    ? SizedBox()
+                    : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        
+                        widget.data['data']['results'][widget.index]['start'] == ""
+                        ? SizedBox()
+                        : text(
+                          title1: "Start Date",
+                          title2: DateFormat.yMMMMd().format(DateTime.parse(widget.data['data']['results'][widget.index]['start'])).toString()
+                        ),
+
+                        SizedBox(height: 30),
+
+                        widget.data['data']['results'][widget.index]['end'] == ""
+                        ? SizedBox()
+                        : text(
+                          title1: "End Date",
+                          title2: DateFormat.yMMMMd().format(DateTime.parse(widget.data['data']['results'][widget.index]['end'])).toString()
+                        ),
+
+
+                        SizedBox(height: 40,),
                       ],
                     ),
                   ),
@@ -198,31 +239,10 @@ class _Story_DetailState extends State<Story_Detail> {
                     ),
                   ),
 
-                  // series
-                  Container(
-                    child: 
-                    series['data']['results'].length != 0
-                    ? Column(
-                      children: [
-                        titleHeading(title: 'Series'),
-
-                        SizedBox(height: 20),
-
-                        Container(
-                          height: Get.size.height * 0.4,
-                          child: Series(series,"comics")
-                        ),
-                        
-                        SizedBox(height: 30,),
-                      ],
-                    )
-                    : SizedBox()
-                  ),
-
                   // stories
                   Container(
                     child: 
-                    comics['data']['results'].length != 0
+                    stories['data']['results'].length != 0
                     ? Column(
                       children: [
                         titleHeading(title: 'Stories'),
@@ -231,7 +251,7 @@ class _Story_DetailState extends State<Story_Detail> {
 
                         Container(
                           height: Get.size.height * 0.4,
-                          child: Series(comics,"comics")
+                          child: Series(stories,"stories")
                         ),
                         
                         SizedBox(height: 30,),
@@ -240,26 +260,58 @@ class _Story_DetailState extends State<Story_Detail> {
                     : SizedBox()
                   ),
 
-                  // events
+                  // urls
                   Container(
                     child: 
-                    events['data']['results'].length != 0
-                    ? Column(
+                    widget.data['data']['results'][widget.index]['urls'].length == 0
+                    ? SizedBox()
+                    : Column(
                       children: [
-                        titleHeading(title: 'Events'),
+                        titleHeading(title: 'URLs'),
 
-                        SizedBox(height: 20),
-
-                        Container(
-                          height: Get.size.height * 0.4,
-                          child: Series(events,"events")
-                        ),
+                        SizedBox(height: 20,),
                         
-                        SizedBox(height: 30,),
+                        Container(
+                          height: 
+                          widget.data['data']['results'][widget.index]['urls'].length == 4 || widget.data['data']['results'][widget.index]['urls'].length == 3
+                          ? Get.size.height * 0.18
+                          : Get.size.height * 0.1,
+                          child: GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.all(0),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: Get.size.height * 0.003,
+                            ),
+                            itemCount: widget.data['data']['results'][widget.index]['urls'].length,
+                            itemBuilder: (BuildContext context, int i) {
+                              return GestureDetector(
+                                onTap: () {
+                                  launchInBrowser(widget.data['data']['results'][widget.index]['urls'][i]['url']);
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 8),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.appGreenColor,
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  child: Text('${widget.data['data']['results'][widget.index]['urls'][i]['type'].toString().toUpperCase()}',
+                                    style: TextStyle(
+                                      color: AppColors.whiteColor,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      
                       ],
-                    )
-                    : SizedBox()
-                  ),
+                    ),
+                  )
+                  
                 ],
               ),
             )
