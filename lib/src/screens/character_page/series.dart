@@ -5,6 +5,7 @@ import 'package:marvel/src/config/colors.dart';
 import 'package:marvel/src/config/text_style.dart';
 import 'package:marvel/src/screens/comics/comics_detail.dart';
 import 'package:marvel/src/screens/series/series_detail.dart';
+import 'package:marvel/src/screens/story/story_detail.dart';
 import 'package:marvel/src/widget/comman_widget/image_view.dart';
 
 class Series extends StatelessWidget {
@@ -26,7 +27,10 @@ class Series extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             if(name == "series") {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Series_Detail(index: index,comics: comics,),));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Series_Detail(index: index,comics: comics),));
+            }
+            if(name == "story") {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Story_Detail(index: index,comics: comics),));
             }
           },
           child: Container(
