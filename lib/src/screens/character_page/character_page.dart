@@ -9,7 +9,6 @@ import 'package:marvel/src/screens/character_page/comics.dart';
 import 'package:marvel/src/screens/character_page/more_detail.dart';
 import 'package:marvel/src/screens/character_page/series.dart';
 import 'package:marvel/src/widget/comman_widget/image_view.dart';
-import 'package:marvel/src/widget/comman_widget/sizeboxs.dart';
 import 'package:marvel/src/widget/comman_widget/title_widget.dart';
 import 'package:marvel/src/widget/loader/loader.dart';
 

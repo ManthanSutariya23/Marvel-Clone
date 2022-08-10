@@ -6,7 +6,6 @@ import 'package:marvel/src/config/text_style.dart';
 import 'package:marvel/src/model/model_variable.dart';
 import 'package:marvel/src/screens/character_page/character_page.dart';
 import 'package:marvel/src/widget/comman_widget/image_view.dart';
-import '../../constant/constants.dart';
 
 class CharacterSlider extends StatefulWidget {
   @override

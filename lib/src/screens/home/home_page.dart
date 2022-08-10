@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marvel/src/config/colors.dart';
-import 'package:marvel/src/constant/constants.dart';
 import 'package:marvel/src/controller/character/character_conroller.dart';
+import 'package:marvel/src/model/model_variable.dart';
 import 'package:marvel/src/screens/home/character_slider.dart';
 import 'package:marvel/src/widget/loader/loader.dart';
 
@@ -32,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     });
     await CharacterController.getCharacterData();
     Timer.periodic(Duration(seconds: 1), (timer) {
-      if(characterList != null) {
+      if(ModelVariable.character != null) {
         timer.cancel();
         setState(() {
           loader = false;
